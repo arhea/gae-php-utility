@@ -22,6 +22,33 @@ then
           $BASEDIR/google_appengine/appcfg.py --oauth2 -R update ./
         fi
     ;;
+    update_queues)
+        if [ $2 ]
+        then
+          $BASEDIR/google_appengine/appcfg.py --oauth2 -R update_queues $2
+        else
+          $BASEDIR/google_appengine/appcfg.py --oauth2 -R update_queues ./
+        fi
+    ;;
+    update_dos)
+        if [ $2 ]
+        then
+          $BASEDIR/google_appengine/appcfg.py --oauth2 -R update_dos $2
+        else
+          $BASEDIR/google_appengine/appcfg.py --oauth2 -R update_dos ./
+        fi
+    ;;
+    update_cron)
+        if [ $2 ]
+        then
+          $BASEDIR/google_appengine/appcfg.py --oauth2 -R update_cron $2
+        else
+          $BASEDIR/google_appengine/appcfg.py --oauth2 -R update_cron ./
+        fi
+    ;;
+    download_app)
+        $BASEDIR/google_appengine/appcfg.py --oauth2 -A download_app $2 -V $3 $4
+    ;;
     rollback)
         if [ $2 ]
         then
@@ -31,8 +58,10 @@ then
         fi
     ;;
     install)
+
         cd $BASEDIR
         echo "Downloading Google App Engine SDK..."
+
         rm `basename $SDK_LINK`
         curl -O $SDK_LINK
         unzip `basename $SDK_LINK`
