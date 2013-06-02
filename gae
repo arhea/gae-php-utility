@@ -25,14 +25,15 @@ then
     rollback)
         if [ $2 ]
         then
-          $BASEDIR/google_appengine/appcfg.py --oauth2 rollback $2
+          $BASEDIR/google_appengine/appcfg.py --oauth2 -R rollback $2
         else
-          $BASEDIR/google_appengine/appcfg.py --oauth2 rollback ./
+          $BASEDIR/google_appengine/appcfg.py --oauth2 -R rollback ./
         fi
     ;;
     install)
         cd $BASEDIR
         echo "Downloading Google App Engine SDK..."
+        rm `basename $SDK_LINK`
         curl -O $SDK_LINK
         unzip `basename $SDK_LINK`
         rm `basename $SDK_LINK`
