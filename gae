@@ -1,0 +1,51 @@
+#! /bin/sh
+SDK_LINK="http://commondatastorage.googleapis.com/appengine-php/appengine-php-sdk-1.8.0.zip"
+PHP_PATH="/opt/local/bin/php-cgi54"
+BASEDIR=$(dirname $0)
+
+if [ $1 ]
+then
+    case "$1" in
+    start)
+        if [ $2 ]
+        then
+          $BASEDIR/google_appengine/dev_appserver.py --php_executable_path=$PHP_PATH $2
+        else
+          $BASEDIR/google_appengine/dev_appserver.py --php_executable_path=$PHP_PATH ./
+        fi
+    ;;
+    deploy)
+        if [ $2 ]
+        then
+          $BASEDIR/google_appengine/appcfg.py --oauth2 -R update $2
+        else
+          $BASEDIR/google_appengine/appcfg.py --oauth2 -R update ./
+        fi
+    ;;
+    rollback)
+        if [ $2 ]
+        then
+          $BASEDIR/google_appengine/appcfg.py --oauth2 rollback $2
+        else
+          $BASEDIR/google_appengine/appcfg.py --oauth2 rollback ./
+        fi
+    ;;
+    install)
+        cd $BASEDIR
+        echo "Downloading Google App Engine SDK..."
+        curl -O $SDK_LINK
+        unzip `basename $SDK_LINK`
+        rm `basename $SDK_LINK`
+
+        echo "Install PHP via MacPorts..."
+
+        sudo /opt/local/bin/port install php54-cgi php54-APC php54-calendar php54-exif php54-gd php54-mysql php54-oauth php54-openssl php54-soap php54-xdebug php54-xsl
+
+    ;;
+    *)
+    help;
+    ;;
+    esac
+else
+  help;
+fi
